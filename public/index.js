@@ -1,9 +1,10 @@
 //index.js
 $(document).ready(()=>{
     const socket = io.connect();
-
     //Keep track of the current user
     let currentUser;
+    // Get the online users from the server
+    socket.emit('get online users');
 
     $('#create-user-btn').click((e)=>{
         e.preventDefault();
@@ -32,7 +33,7 @@ $(document).ready(()=>{
         }
     });
 
-    
+
     //socket listeners
     socket.on('new user', (username) => {
         console.log(`${username} has joined the chat`);
@@ -48,6 +49,13 @@ $(document).ready(()=>{
             <p class="message-text">${data.message}</p>
         </div>
         `);
+    })
+
+    socket.on('get online users', (onlineUsers) => {
+        //Our usernames are keys in the object of onlineUsers.
+        for(username in onlineUsers){
+          $('.users-online').append(`<div class="user-online">${username}</div>`);
+        }
     })
 
 })
