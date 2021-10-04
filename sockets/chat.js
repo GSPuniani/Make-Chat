@@ -55,4 +55,8 @@ module.exports = (io, socket, onlineUsers, channels) => {
         });
     });
 
+    socket.on("get all channels", () => {
+        socket.emit("get all channels", channels)
+    })
+
 }

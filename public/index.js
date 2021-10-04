@@ -7,6 +7,8 @@ $(document).ready(()=>{
     socket.emit('get online users');
     //Each user should be in the general channel by default.
     socket.emit('user changed channel', "General");
+    // Get the channels from the server
+    socket.emit('get all channels');
 
     //Users can change the channel by clicking on its name.
     $(document).on('click', '.channel', (e)=>{
@@ -88,7 +90,7 @@ $(document).ready(()=>{
     socket.on('user has left', (onlineUsers) => {
         $('.users-online').empty();
         for(username in onlineUsers){
-        $('.users-online').append(`<p>${username}</p>`);
+            $('.users-online').append(`<p>${username}</p>`);
         }
     });
 
@@ -114,5 +116,14 @@ $(document).ready(()=>{
             `);
         });
     });
+
+    // Add all channels besides the default one (General)
+    socket.on("get all channels", (channels) => {
+        for(channel in channels){
+            if(channel != "General"){
+              $(".channels").append(`<div class="channel">${channel}</div>`)
+            }
+        }
+    })
 
 })
